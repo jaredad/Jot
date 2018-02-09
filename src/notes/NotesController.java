@@ -8,160 +8,129 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
+@SuppressWarnings("unused")
 public class NotesController {
-	
-	private String mode;
 
-    @FXML
-    private Button scaleUp;
+	private Modes modes;
+	private Files file;
 
-    @FXML
-    private MenuItem eraser;
+	@FXML
+	private MenuItem zoom;
 
-    @FXML
-    private MenuItem moveContent;
+	@FXML
+	private MenuItem moveTextbox;
 
-    @FXML
-    private MenuItem textbox;
+	@FXML
+	private MenuItem textbox;
 
-    @FXML
-    private Button scaleDown;
+	@FXML
+	private Menu menuFile;
 
-    @FXML
-    private Menu menuFile;
+	@FXML
+	private MenuItem SaveCanvas;
 
-    @FXML
-    private MenuItem SaveCanvas;
+	@FXML
+	private MenuBar bar;
 
-    @FXML
-    private MenuBar bar;
+	@FXML
+	private MenuItem loadCanvas;
 
-    @FXML
-    private MenuItem loadCanvas;
 
-    @FXML
-    private MenuItem pen;
+	@FXML
+	private MenuItem moveCanvasV;
 
-    @FXML
-    private MenuItem moveCanvas;
+	@FXML
+	private MenuItem moveCanvasH;
 
-    @FXML
-    private MenuItem newCanvas;
+	@FXML
+	private MenuItem newCanvas;
 
-    @FXML
-    private AnchorPane pane;
+	@FXML
+	private Pane pane;
 
-    @FXML
-    private MenuItem saveCanvasAs;
-    
-    @FXML
-    private Label label;
-    
-    
-    public void modeChange () {
-    	TextArea textArea = new TextArea();
-    	textbox.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        mode = "Textbox Mode";
-    	        label.setText(mode);
-    	        System.out.println(mode);
-    	        textArea.setPrefWidth(400);
-    	        textArea.setPrefHeight(700);
-    	        textArea.setWrapText(true);
-    	        AnchorPane.setTopAnchor(textArea, 50.0);
-    	        pane.getChildren().addAll(textArea);
-    	    }
-    	});
-    	
-    	pen.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        mode = "Drawing Mode";
-    	        label.setText(mode);
-    	        System.out.println(mode);
-    	    }
-    	});
-    	
-    	eraser.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        mode = "Eraser Mode";
-    	        label.setText(mode);
-    	        System.out.println("Eraser Mode");
-    	    }
-    	});
-    	
-    	moveContent.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        mode = "Move Content";
-    	        label.setText(mode);
-    	        System.out.println("Move Textbox/Drawing Mode");
-    	    }
-    	});
-    	
-    	moveCanvas.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        mode = "Move Canvas";
-    	        label.setText(mode);
-    	        System.out.println("Move Canvas Mode");
-    	    }
-    	});
-    	
-    	scaleUp.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        System.out.println("scaled up");
-    	    }
-    	});
-    	
-    	scaleDown.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        System.out.println("scaled Down");
-    	    }
-    	});
-    	
-    	SaveCanvas.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        System.out.println("Canvas Saved");
-    	    }
-    	});
-    	
-    	loadCanvas.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        System.out.println("Load Canvas");
-    	    }
-    	});
-    	
-    	saveCanvasAs.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        System.out.println("Save Canvas As...");
-    	        if (pane.getChildren().contains(textArea)){
-    	        	String saved = textArea.getText();
-    	        	
-    	        }
-    	    }
-    	});
-    	
-    	newCanvas.setOnAction(new EventHandler<ActionEvent>() {
-    	    @Override
-    	    public void handle(ActionEvent event) {
-    	        System.out.println("New Canvas");
-    	    }
-    	});
-    	
-    	
-    }
+	@FXML
+	private Pane mainPane;
 
+	@FXML
+	private MenuItem saveCanvasAs;
+
+	@FXML
+	private Menu label;
+
+	@FXML
+	private MenuItem clear;
+
+
+	@FXML
+	public void initialize() {
+		bar.prefWidthProperty().bind(mainPane.widthProperty());
+		pane.prefWidthProperty().bind(mainPane.widthProperty());
+		pane.prefHeightProperty().bind(mainPane.heightProperty());
+		modes = new Modes();
+		file = new Files();
+
+	}
+
+
+	public void modeChange () {
+		textbox.setOnAction(event -> {
+			modes.labelChange("Textbox Mode",label);
+			modes.modeReset(pane);
+			pane.setOnMouseClicked(e -> {
+				modes.createTextbox(pane, e.getX(),e.getY());
+			});});
+
+
+		moveTextbox.setOnAction(event -> { 
+			modes.labelChange("Move Textbox Mode", label);
+			modes.moveTextbox(pane);
+		});
+
+		moveCanvasV.setOnAction(event -> {
+			modes.labelChange("Move Canvas Vertical Mode", label);
+			modes.moveCanvasSetup(pane,true);
+		});
+
+		moveCanvasH.setOnAction(event -> {
+			modes.labelChange("Move Canvas Horizontal Mode", label);
+			modes.moveCanvasSetup(pane,false);
+		});
+
+		clear.setOnAction(event -> {
+			modes.labelChange("No Mode Selected", label);
+			modes.modeReset(pane);
+		});
+
+		zoom.setOnAction(event -> {
+			modes.labelChange("Zoom In/Out Mode", label);
+			modes.zoom(pane);
+		});
+
+
+		SaveCanvas.setOnAction(event -> {
+			file.saveSetup(pane);
+		});
+
+		loadCanvas.setOnAction(event -> {
+			file.loadSetup(pane,label);
+		});
+
+		saveCanvasAs.setOnAction(event -> {
+			file.newSaveSetup(pane);
+		});
+
+		newCanvas.setOnAction(event -> {
+			modes.labelChange("No Mode Selected", label);
+			modes.modeReset(pane);
+			file.newFile(pane);
+		});
+	}
 }

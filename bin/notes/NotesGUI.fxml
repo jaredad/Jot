@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.control.*?>
@@ -7,31 +9,31 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="notes.NotesController">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="notes.NotesController">
    <children>
-      <MenuBar fx:id="bar" layoutX="14.0" layoutY="14.0" opacity="0.9" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" />
+      <MenuBar fx:id="bar">
         <menus>
           <Menu fx:id="menuFile" mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem fx:id="newCanvas" mnemonicParsing="false" text="New Canvas" />
-              <MenuItem fx:id="loadCanvas" mnemonicParsing="false" text="Load Canvas" />
-                  <MenuItem fx:id="saveCanvasAs" mnemonicParsing="false" text="Save Canvas As..." />
-                  <MenuItem fx:id="SaveCanvas" mnemonicParsing="false" text="Save Canvas" />
+            	<MenuItem fx:id="newCanvas" mnemonicParsing="false" onAction="#modeChange" text="New Canvas" />
+              	<MenuItem fx:id="loadCanvas" mnemonicParsing="false" onAction="#modeChange" text="Load Canvas" />
+                 <MenuItem fx:id="saveCanvasAs" mnemonicParsing="false" onAction="#modeChange" text="Save Canvas As..." />
+                 <MenuItem fx:id="SaveCanvas" mnemonicParsing="false" onAction="#modeChange" text="Save Canvas" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Tools">
+          <Menu mnemonicParsing="false" text="Mode">
             <items>
-              <MenuItem fx:id="pen" mnemonicParsing="false" onAction="#modeChange" text="Pen" />
-                  <MenuItem fx:id="eraser" mnemonicParsing="false" text="Eraser" />
-                  <MenuItem fx:id="textbox" mnemonicParsing="false" onAction="#modeChange" text="Textbox" />
-                  <MenuItem fx:id="moveContent" mnemonicParsing="false" text="Move Textbox/Drawing" />
-                  <MenuItem fx:id="moveCanvas" mnemonicParsing="false" text="Move Canvas" />
+              <MenuItem fx:id="textbox" mnemonicParsing="false" onAction="#modeChange" text="Textbox Mode" />
+                  <MenuItem fx:id="moveTextbox" mnemonicParsing="false" onAction="#modeChange" text="Move Textbox Mode" />
+                  <MenuItem fx:id="moveCanvasV" mnemonicParsing="false" onAction="#modeChange" text="Move Canvas Vertical Mode" />
+                  <MenuItem fx:id="moveCanvasH" mnemonicParsing="false" onAction="#modeChange" text="Move Canvas Horizontal Mode" />
+                  <MenuItem fx:id="zoom" mnemonicParsing="false" onAction="#modeChange" text="Zoom In/Out Mode" />
+                  <MenuItem fx:id="clear" mnemonicParsing="false" text="Clear Modes" />
             </items>
           </Menu>
+            <Menu fx:id="label" disable="true" mnemonicParsing="false" text="                                                                                                       No Mode Selected" />
         </menus>
       </MenuBar>
-      <Button fx:id="scaleUp" layoutX="584.0" layoutY="377.0" mnemonicParsing="false" opacity="0.5" prefWidth="25.0" text="+" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="25.0" />
-      <Button fx:id="scaleDown" layoutX="584.0" layoutY="413.0" mnemonicParsing="false" opacity="0.5" prefWidth="25.0" text="-" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="25.0" />
-      <Label fx:id="label" layoutX="14.0" layoutY="372.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
    </children>
-</AnchorPane>
+</Pane>
