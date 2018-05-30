@@ -40,12 +40,11 @@ public class Modes {
 	}
 
 	public void dragAndDrop(Pane pane, TextArea node) {
-		modeReset(pane);
 		Node textAreaContent = node.lookup(".content");
 
 		textAreaContent.setOnMousePressed(event -> {
-			nodeX = textAreaContent.getLayoutX() - 100;
-			nodeY = textAreaContent.getLayoutY() - 100;
+			nodeX = textAreaContent.getLayoutX() - 50;
+			nodeY = textAreaContent.getLayoutY() - 50;
 		});
 
 		textAreaContent.setOnMouseDragged(event -> {
@@ -91,9 +90,7 @@ public class Modes {
 			double translateFactorX = 0;
 			double translateFactorY = 0;
 			double centerX = pane.getScene().getWindow().getWidth() / 2;
-			System.out.println(centerX);
 			double centerY = pane.getScene().getWindow().getHeight() / 2;
-			System.out.println(centerY);
 			double zoomFactor = setupZoomFactor(delta_y);
 
 			for (Node node : pane.getChildren()) {
@@ -156,8 +153,12 @@ public class Modes {
 	public void modeReset(Pane pane) {
 		for (Node node : pane.getChildren()) {
 			if (node instanceof TextArea) {
+				Node textAreaContent = node.lookup(".content");
+				textAreaContent.setOnMouseDragged(null);
 				((TextArea) node).setOnMouseClicked(null);
 				((TextArea) node).setOnMouseDragged(null);
+				((TextArea) node).setPrefWidth(200);
+				((TextArea) node).setPrefHeight(200);
 				pane.setOnMouseMoved(null);
 				pane.setOnMouseClicked(null);
 				pane.setOnScroll(null);
